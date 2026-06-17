@@ -253,14 +253,30 @@ class WindmillApi:
     async def _async_dashboard_hardware_write(
         self, device_id: str, pin: str, value: Any
     ) -> None:
+        pin_type, dashboard_pin = self._dashboard_pin(pin)
         await self._async_dashboard_request(
             WS_COMMAND_HARDWARE,
             lambda: (
                 f"{self._coerce_device_id(device_id)}{WS_VALUE_SEPARATOR}"
-                f"vw{WS_VALUE_SEPARATOR}{pin}{WS_VALUE_SEPARATOR}{value}"
+                f"{pin_type}{WS_VALUE_SEPARATOR}{dashboard_pin}"
+                f"{WS_VALUE_SEPARATOR}{value}"
             ),
             expect_command=None,
         )
+
+    def _dashboard_pin(self, pin: str) -> tuple[str, str]:
+        """Return the dashboard hardware pin type and numeric pin value."""
+
+        pin_text = str(pin)
+        if len(pin_text) > 1 and pin_text[1:].isdigit():
+            pin_prefix = pin_text[0].upper()
+            if pin_prefix == "A":
+                return "aw", pin_text[1:]
+            if pin_prefix == "D":
+                return "dw", pin_text[1:]
+            if pin_prefix == "V":
+                return "vw", pin_text[1:]
+        return "vw", pin_text
 
     async def _async_dashboard_request(
         self,
@@ -341,6 +357,9 @@ class WindmillApi:
         else:
             await send_bytes(frame)
 
+        if expect_command is None:
+            return None
+
         while True:
             message = await self._async_receive_ws_message(ws)
             message_data = getattr(message, "data", message)
@@ -369,8 +388,6 @@ class WindmillApi:
                     raise WindmillResponseError(
                         f"Windmill returned response code {response_code}"
                     )
-                if expect_command is None:
-                    return None
                 continue
 
             if expect_command is not None and frame_command == expect_command:

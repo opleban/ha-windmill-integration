@@ -288,11 +288,10 @@ async def test_dashboard_device_state_parses_widget_pin_values() -> None:
 
 
 @pytest.mark.asyncio
-async def test_dashboard_update_sends_hardware_virtual_write() -> None:
+async def test_dashboard_update_sends_hardware_virtual_write_without_waiting_for_ack() -> None:
     session = MockWsSession(
         [
             _encode_ws_frame(2, 1, json.dumps({"orgId": 1234})),
-            _response_frame(2, 200),
         ]
     )
     api = WindmillApi(
@@ -307,7 +306,20 @@ async def test_dashboard_update_sends_hardware_virtual_write() -> None:
     command, msg_id, payload = _decoded_frame(session.sent_frames[1])
     assert command == 20
     assert msg_id == 2
-    assert payload == "1\0vw\0V0\0" "1"
+    assert payload == "1\0vw\0" "0\0" "1"
+
+
+def test_dashboard_pin_strips_pin_prefix_for_hardware_write() -> None:
+    api = WindmillApi(
+        email="user@example.com",
+        password_hash="hashed-password",
+        org_id=1234,
+        session=MockWsSession([]),
+    )
+
+    assert api._dashboard_pin("V3") == ("vw", "3")
+    assert api._dashboard_pin("A1") == ("aw", "1")
+    assert api._dashboard_pin("D2") == ("dw", "2")
 
 
 @pytest.mark.asyncio
