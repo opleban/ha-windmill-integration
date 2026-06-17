@@ -6,7 +6,7 @@ from typing import Any, Optional
 
 from homeassistant.components.climate import ClimateEntity, ClimateEntityFeature
 from homeassistant.components.climate.const import HVACMode
-from homeassistant.const import TEMP_FAHRENHEIT
+from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers.update_coordinator import CoordinatorEntity, UpdateFailed
 
 from .api import WindmillDevice, WindmillDeviceState
@@ -116,7 +116,7 @@ class WindmillClimateEntity(CoordinatorEntity, ClimateEntity):
     def temperature_unit(self) -> str:
         """Return the temperature unit."""
 
-        return TEMP_FAHRENHEIT
+        return UnitOfTemperature.FAHRENHEIT
 
     @property
     def hvac_modes(self) -> list[HVACMode]:

@@ -150,7 +150,7 @@ def _install_stubs() -> None:
     climate_module.ClimateEntity = FakeClimateEntity
     climate_module.ClimateEntityFeature = ClimateEntityFeature
     climate_const_module.HVACMode = HVACMode
-    const_module.TEMP_FAHRENHEIT = "fahrenheit"
+    const_module.UnitOfTemperature = SimpleNamespace(FAHRENHEIT="fahrenheit")
     update_coordinator_module.CoordinatorEntity = FakeCoordinatorEntity
     update_coordinator_module.DataUpdateCoordinator = FakeDataUpdateCoordinator
     update_coordinator_module.UpdateFailed = FakeUpdateFailed
