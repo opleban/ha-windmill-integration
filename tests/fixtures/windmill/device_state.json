@@ -1,0 +1,9 @@
+{
+  "unique_id": "device-abc123",
+  "power": 1,
+  "current_temperature": 69,
+  "target_temperature": 72,
+  "mode": 1,
+  "fan_speed": 1
+}
+

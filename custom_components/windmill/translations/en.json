@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Windmill",
+        "description": "Enter your Windmill dashboard credentials and organization id from the dashboard URL. The password is hashed before it is stored.",
+        "data": {
+          "email": "Email",
+          "password": "Password",
+          "org_id": "Organization id"
+        }
+      }
+    },
+    "error": {
+      "required": "All fields are required.",
+      "invalid_auth": "The Windmill credentials were rejected.",
+      "cannot_connect": "Could not connect to Windmill or no AC devices were found."
+    },
+    "abort": {
+      "already_configured": "This Windmill account or AC device is already configured."
+    }
+  }
+}

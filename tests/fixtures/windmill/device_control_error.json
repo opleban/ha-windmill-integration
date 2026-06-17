@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "error": "command_failed",
+  "message": "Windmill rejected the command"
+}

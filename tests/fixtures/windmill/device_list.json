@@ -1,0 +1,10 @@
+{
+  "devices": [
+    {
+      "unique_id": "device-abc123",
+      "name": "Living Room AC",
+      "can_set_temperature": true
+    }
+  ]
+}
+
